@@ -3,24 +3,22 @@
     <div>
 
         <b-card-group deck class="">
-                <b-card title="Stats for this week" >
-
-                    <b-row>
-                        <b-col>
-                           
-                        </b-col>
-                        <b-col>
-                            <span style="font-szie:100%;width:100%;" class="badge border border-secondary">
-                                Total recipes <span class="badge badge-light">{{ stats.totalMenuScore }}</span>
-                            </span>
-                        </b-col>
+                <b-card class="card" :class="['text-' + colorOfStatsOfWeek, 'border-' + colorOfStatsOfWeek]" title="Stats for this week" >
+                    <b-row class="text-dark">
                         <b-col>
                             <span style="font-szie:100%;width:100%;" class="badge border border-secondary">
                                 Total recipes <span class="badge badge-light">{{ stats.totalRecipes }}</span>
                             </span>
                         </b-col>
                         <b-col>
-                           
+                           <span style="font-szie:100%;width:100%;" class="badge border border-secondary">
+                                Total score <span class="badge badge-light">{{ calcPointsOnReplacement(stats.costHistTotal,0) }}</span>
+                            </span>
+                        </b-col>
+                        <b-col>
+                            <span style="font-szie:100%;width:100%;" class="badge border border-secondary">
+                                Avarage score <span class="badge badge-light">{{ calcPointsOnReplacement(stats.averageCost, 0) }}</span>
+                            </span>
                         </b-col>
                     </b-row>
                     
@@ -30,64 +28,111 @@
         <b-card-group deck class="mt-3">
             <b-card  :header=" createCalendarIcon + ' <b>Monday</b>'" >
                 <b-card>
-
                     <b-row>
-                        <b-col lg="8" class="d-flex flex-column" >
-                            <h3>Carbonara</h3>
-                                <ul class="ingridients">
-                                    <li v-for="(ingridient, index) in recipes[0]"
+                        <b-col lg="7" class="d-flex flex-column" >
+                            <h3>{{ recipes[0].Name }}</h3>
+                                <ul class="">
+                                    <li v-for="(ingredient, index) in recipes[0].ingredients"
                                         :key="index"
                                         data-toggle="tooltip"
                                         data-placement="top"
-                                        :title="'CO2: ' + ingridient.CO2"
-                                        :class="getColor(ingridient.CO2)"
-                                        >{{ ingridient.kg + ' kg ' + ingridient.Product  }}</li>
+                                        :title="'CO2: ' + ingredient.CO2"
+                                        :class="getColor(ingredient.CO2)">
+                                        {{ ingredient.kg + ' kg ' + ingredient.Product  }}
+                                        <ul v-if="ingredient.hasOwnProperty('replacement')">
+                                            <li class="text-primary replacementtext">
+                                                <a>&#8614; Replace with {{ ingredient.replacement.Product }} 
+                                                    <span class="badge badge-success">+ {{ calcPointsOnReplacement(ingredient.CO2, ingredient.replacement.CO2) }}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        </li>
                                 </ul>
-
-                            <div class="mt-auto">
-                                <b-link href="#"
-                                    class="card-link">Open recipe</b-link>
-
-                                <b-badge class=" float-right" variant="danger">1</b-badge>
-                            </div>
+                                <div class="mt-auto">
+                                    <b-link :href="recipes[0].recipe_url" target="_blank" class="card-link">Open recipe</b-link>
+                                    <b-badge class=" float-right" variant="danger">{{ calcPointsOnReplacement(recipes[0].userRecipeCost, 0) }}</b-badge>
+                                </div>
                         </b-col>
-                        <b-col lg="4" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;">
-                            <img style="width: 100%; border-radius: 0px 5px 5px 0px;" src="https://recipecontent.fooby.ch/14241_131-150_262-300.jpg">
+                        <b-col lg="5" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;">
+                            <img style="width: 100%; border-radius: 0px 5px 5px 0px;" :src="recipes[0].picture_url">
                         </b-col>
                     </b-row>
-
-                    
                 </b-card>
             </b-card>
         </b-card-group>
         <b-card-group deck class="mt-3">
-            <b-card :header=" createCalendarIcon + ' <b>Tuesday</b>'">
-                <b-card title="Card title"
-                        sub-title="Card subtitle">
-                    <p class="card-text">
-                        Some quick example text to build on the <em>card title</em> and make up the bulk of the card's content.
-                    </p>
-                    <a href="#"
-                    class="card-link">Card link</a>
-                    <b-link href="#"
-                            class="card-link">Another link</b-link>
+            <b-card  :header=" createCalendarIcon + ' <b>Tuesday</b>'" >
+                <b-card>
+                    <b-row>
+                        <b-col lg="7" class="d-flex flex-column" >
+                            <h3>{{ recipes[1].Name }}</h3>
+                                <ul class="">
+                                    <li v-for="(ingredient, index) in recipes[1].ingredients"
+                                        :key="index"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        :title="'CO2: ' + ingredient.CO2"
+                                        :class="getColor(ingredient.CO2)"
+                                        >
+                                        {{ ingredient.kg + ' kg ' + ingredient.Product  }}
+                                        <ul v-if="ingredient.hasOwnProperty('replacement')">
+                                            <li class="text-primary replacementtext">
+                                                <a>&#8614; Replace with {{ ingredient.replacement.Product }} 
+                                                    <span class="badge badge-success">+ {{ calcPointsOnReplacement(ingredient.CO2, ingredient.replacement.CO2) }}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        </li>
+                                </ul>
+                                <div class="mt-auto">
+                                    <b-link :href="recipes[0].link" target="_blank" class="card-link">Open recipe</b-link>
+                                    <b-badge class=" float-right" variant="danger">{{ calcPointsOnReplacement(recipes[1].userRecipeCost, 0) }}</b-badge>
+                                </div>
+                        </b-col>
+                        <b-col lg="5" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;">
+                            <img style="width: 100%; border-radius: 0px 5px 5px 0px;" :src="recipes[1].thumbnailLink">
+                        </b-col>
+                    </b-row>
                 </b-card>
             </b-card>
         </b-card-group>
         <b-card-group deck class="mt-3">
-            <b-card :header=" createCalendarIcon + ' <b>Wednesday</b>'">
-                <b-card title="Card title"
-                        sub-title="Card subtitle">
-                    <p class="card-text">
-                        Some quick example text to build on the <em>card title</em> and make up the bulk of the card's content.
-                    </p>
-                    <a href="#"
-                    class="card-link">Card link</a>
-                    <b-link href="#"
-                            class="card-link">Another link</b-link>
+            <b-card  :header=" createCalendarIcon + ' <b>Wednesday</b>'" >
+                <b-card>
+                    <b-row>
+                        <b-col lg="7" class="d-flex flex-column" >
+                            <h3>{{ recipes[2].Name }}</h3>
+                                <ul class="">
+                                    <li v-for="(ingredient, index) in recipes[2].ingredients"
+                                        :key="index"
+                                        data-toggle="tooltip"
+                                        data-placement="top"
+                                        :title="'CO2: ' + ingredient.CO2"
+                                        :class="getColor(ingredient.CO2)"
+                                        >
+                                        {{ ingredient.kg + ' kg ' + ingredient.Product  }}
+                                        <ul v-if="ingredient.hasOwnProperty('replacement')">
+                                            <li class="text-primary replacementtext">
+                                                <a>&#8614; Replace with {{ ingredient.replacement.Product }} 
+                                                    <span class="badge badge-success">+ {{ calcPointsOnReplacement(ingredient.CO2, ingredient.replacement.CO2) }}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        </li>
+                                </ul>
+                                <div class="mt-auto">
+                                    <b-link :href="recipes[0].link" target="_blank" class="card-link">Open recipe</b-link>
+                                    <b-badge class=" float-right" variant="danger">{{ calcPointsOnReplacement(recipes[2].userRecipeCost, 0) }}</b-badge>
+                                </div>
+                        </b-col>
+                        <b-col lg="5" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;">
+                            <img style="width: 100%; border-radius: 0px 5px 5px 0px;" :src="recipes[2].thumbnailLink">
+                        </b-col>
+                    </b-row>
                 </b-card>
             </b-card>
         </b-card-group>
+        
     </div>
 </template>
 
@@ -106,24 +151,50 @@ export default {
        createCalendarIcon(){
            return '<img height="20px;" src="' + require("../../assets/1f4c6.png") + '">'
        },
+       colorOfStatsOfWeek(){
+           let color = 'danger'
+           if(this.stats.totalMenuScore < 1){
+               color = 'success'
+           } else if (this.stats.totalMenuScore == 1){
+               color = 'warning'
+           }
+
+           return color
+       }
    },
    methods:{
        getColor(co2){
            let color = 'danger'
 
            return 'text-' + color
+       },
+       calcPointsOnReplacement(itemCO2, replacementCO2){
+            let plusScore = Math.floor(itemCO2 - replacementCO2)
+            console.log("Plusscore", plusScore )
+            if (plusScore <= 0){
+                plusScore = 1;
+            }
+            return plusScore
        }
    }
 }
 </script>
 
 <style scoped>
-ul.ingridients {
+ul.ingredients {
     columns: 2;
     -webkit-columns: 2;
     -moz-columns: 2;
     list-style: none;
     padding-left: 0px;
+}
+
+.replacementtext {
+    list-style: none;
+}
+
+.replacementtext a {
+     cursor: pointer;
 }
 </style>
 

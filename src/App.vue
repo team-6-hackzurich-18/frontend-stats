@@ -24,8 +24,9 @@
                         <template slot="header">
                             <b>How many planets do you need?</b>
                         </template>
-                        <img style="width: 150px;" id="user_selected_image" :src="earthImage"/>
-                        <h3 class="mt-2">1.2x</h3>
+                        <div style="margin: 0 auto;" id="earth_container" :style="earthContainerImage">
+                        </div>
+                        <h3 class="mt-2">{{ scoreWorldConsumed }}x</h3>
                     </b-card>
 
                     <b-card class="mt-3 text-center" header="" >
@@ -33,7 +34,8 @@
                             <b>Your trend over the last 6 months</b>
                         </template>
                         <trend
-                            :data="[0.4, 0.9, 0.3, 0.2, 0.4, 0.6, 0.2, 0.7, 0.7, 0.3, 0.1, 0.4, 0.2, 0.9, 0.2]"
+                            id="charttrend"
+                            :data="history"
                             :gradient="['#33cc33', '#ff9933', '#ff5050']"
                             auto-draw
                             style="stroke-width:3px;"
@@ -65,26 +67,38 @@ export default {
   },
   data () {
     return {
-      earths: 1.2,
-      score: 0.4,
+      score: 0,
       stats: {
-            totalMenuScore: 0.4,
-            totalRecipes: 0
+            totalMenuScore: 0,
+            totalRecipes: 0,
+            costHistTotal: 0,
+            averageCost: 0,
+            averageWorldsConsumed: 0,
+            averageColor: 0
         },
-       recipes: []
+       recipes: [],
+       history: [0]
     }
   },
   created(){
       this.getRecipes()
   },
   computed: {
-       earthImage(){
-           return require("./assets/earth_" +  this.earths +".jpg")
-       },
        scoreIcon(){
            //https://en.wikipedia.org/wiki/Emoji
            let iconName = (this.score < 0.5) ? '1f389' : '1f614';
            return require("./assets/" + iconName + ".png");
+       },
+       scoreWorldConsumed(){
+           return Math.round(this.stats.averageWorldsConsumed * 100) / 100
+       },
+       scoreWorldConsumedImage(){
+           return Math.floor(this.scoreWorldConsumed * 10) / 10
+       },
+       earthContainerImage(){
+           let width = (this.scoreWorldConsumedImage * 100) + 'px';
+           console.log("width", width)
+           return 'background-image: url(\'' + require("./assets/earth.jpg") + '\');background-size: contain;width:' + width + ';height:100px; background-repeat: repeat-x;'
        }
   },
   methods: {
@@ -93,8 +107,60 @@ export default {
                 console.log(response.data)
 
                 this.recipes = response.data.allRecipes
+                this.stats = response.data.stats
+
+                /*
+                this.recipes = [
+                    {
+                        Name: "Lasagne",
+                        "userRecipeCost": 18.955199999999998,
+                        link: "https://fooby.ch/de/rezepte/14241/spaghetti-alla-carbonara",
+                        thumbnailLink: "https://recipecontent.fooby.ch/14241_131-150_262-300.jpg",
+                        "ingredients": [
+                            { "Product": "Beef", "kg": 0.6, "CO2": 16.656, replacement: { "Product": "lenses", "kg": 0.6, "CO2": 0.84 } },
+                            {
+                                "Product": "Wheat",
+                                "kg": 0.1,
+                                "CO2": 0.051000000000000004
+                            },
+                            {
+                                "Product": "Whole Milk",
+                                "kg": 0.6,
+                                "CO2": 0.84
+                            },
+                            {
+                                "Product": "Cheese slices",
+                                "kg": 0.08,
+                                "CO2": 0.6631999999999999
+                            },
+                            {
+                                "Product": "Dry Pasta",
+                                "kg": 0.5,
+                                "CO2": 0.745
+                            }
+                        ]
+                    }
+                ]
+
+                
+                this.stats = {
+                            "costHistTotal": 56.86559999999999,
+                            "n_recipesTotal": 3,
+                            "averageCost": 18.955199999999998,
+                            "averageWorldsConsumed": 1.26368,
+                            "averageColor": 0.63184
+                        }
+                */
 
             })
+      },
+      getHistory(){
+          Vue.axios.get("https://hackzurich-node-red.scapp.io/recipes", {headers: {'Access-Control-Allow-Origin': '*'}}).then((response) => {
+              this.history = response.data
+
+                var chart = document.getElementById("charttrend");
+                chart.$forceUpdate()
+          })
       }
   },
   watch: {
@@ -109,5 +175,6 @@ export default {
 </script>
 
 <style>
+
 
 </style>
