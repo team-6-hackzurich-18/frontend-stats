@@ -4,9 +4,7 @@
     <b-card-group deck class="ml-3 mr-3">
         <b-card style="padding-right:14px;" header="<b>Monday</b>" >
             <b-card>
-
                 <b-row>
-
                     <b-col lg="8" class="d-flex flex-column">
                         <h3>Carbonara</h3>
                         <p class="card-text">
