@@ -44,7 +44,7 @@
             </b-col>
             <b-col sm="12" lg="8" class="mt-3">
 
-                <menu-plan></menu-plan>
+                <menu-plan :stats="stats" :recipes="recipes"></menu-plan>
 
             </b-col>
             
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import TopNavbar from './components/layout/TopNavbar'
 import MenuPlan from './components/Menu/MenuPlan'
 
@@ -65,11 +66,16 @@ export default {
   data () {
     return {
       earths: 1.2,
-      score: 0.4
+      score: 0.4,
+      stats: {
+            totalMenuScore: 0.4,
+            totalRecipes: 0
+        },
+       recipes: []
     }
   },
   created(){
-
+      this.getRecipes()
   },
   computed: {
        earthImage(){
@@ -78,11 +84,27 @@ export default {
        scoreIcon(){
            //https://en.wikipedia.org/wiki/Emoji
            let iconName = (this.score < 0.5) ? '1f389' : '1f614';
-           console.log("Icon ", "./assets/" + iconName +".png")
            return require("./assets/" + iconName + ".png");
-           //return require("./assets/earth_" +  this.earths +".jpg")
        }
-  }
+  },
+  methods: {
+      getRecipes(){
+          Vue.axios.get("https://hackzurich-node-red.scapp.io/recipes", {headers: {'Access-Control-Allow-Origin': '*'}}).then((response) => {
+                console.log(response.data)
+
+                this.recipes = response.data.allRecipes
+
+            })
+      }
+  },
+  watch: {
+    recipes: {
+        handler(){
+            this.stats.totalRecipes = this.recipes.length
+        },
+        deep: true
+    }
+    }
 }
 </script>
 
