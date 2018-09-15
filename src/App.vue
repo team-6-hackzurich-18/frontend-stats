@@ -39,7 +39,7 @@
             </b-col>
             <b-col sm="12" lg="8" class="mt-3">
 
-                <menu-plan :stats="stats" :recipes="recipes"></menu-plan>
+                <menu-plan :stats="stats" :recipes="recipes" @ingrediantReplaced="replaceIngrediant"></menu-plan>
 
             </b-col>
             
@@ -114,7 +114,6 @@ export default {
             // 1.5 rot
             // > sehr rot
 
-
             if (this.scoreWorldConsumed < 0.75) {
                 color = 't6-guut'
             } else if (this.scoreWorldConsumed < 1) {
@@ -136,7 +135,7 @@ export default {
                 console.log(response.data)
 
                 this.recipes = response.data.allRecipes
-                this.stats = newStats
+                this.stats = response.data.stats
 
                 /*
                 this.recipes = [
@@ -190,6 +189,16 @@ export default {
                 var chart = document.getElementById("charttrend");
                 chart.$forceUpdate()
           })
+      },
+      replaceIngrediant(infos){
+          console.log("comp2",  infos)
+
+          infos.ingredient.kg = this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex].kg
+
+            console.log("bef", this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex])
+            this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex] = infos.ingredient
+            infos.component.$forceUpdate()
+            console.log("aft", this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex])
       }
   },
   watch: {

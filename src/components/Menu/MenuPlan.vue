@@ -42,10 +42,10 @@
                                         :title="'CO2: ' + ingredient.CO2"
                                         :class="getColor(ingredient.CO2)">
                                         {{ ingredient.kg + ' kg ' + ingredient.Product  }}
-                                        <ul v-if="ingredient.hasOwnProperty('replacement')">
+                                        <ul v-if="ingredient.hasOwnProperty('Replacement')">
                                             <li class="text-primary replacementtext">
-                                                <a>&#8614; Replace with {{ ingredient.replacement.Product }} 
-                                                    <span class="badge badge-success">+ {{ calcPointsOnReplacement(ingredient.CO2, ingredient.replacement.CO2) }}</span>
+                                                <a @click="replaceIngredient($event, i, 1,  ingredient.Replacement)">&#8614; Replace with {{ ingredient.Replacement.Name }} 
+                                                    <span class="badge badge-success">+ {{ calcPointsOnReplacement(ingredient.CO2, ingredient.Replacement.CO2) }}</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -96,11 +96,31 @@ export default {
            }
 
            return color
+       },
+       colorGen(){
+           
        }
    },
    methods:{
        getColor(co2){
-           let color = 'danger'
+            var color = 'bad'
+            // 0.75 sehr grün
+            // 1 grün
+            // 1.25 gelb
+            // 1.5 rot
+            // > sehr rot
+
+            if (co2 < 0.75) {
+                color = 't6-guut'
+            } else if (co2 < 1) {
+                color = 't6-guut'
+            } else if (co2 < 1.25) {
+                color = 't6-meedium'
+            } else if (co2 < 1.5) {
+                color = 't6-medium'
+            } else {
+                color = 't6-bad'
+            }
 
            return 'text-' + color
        },
@@ -110,8 +130,25 @@ export default {
                 plusScore = 1;
             }
             return plusScore
+       },
+       replaceIngredient(e, recipeIndex, ingrediantIndex, ingredient){
+           recipeIndex -= 1
+           ingrediantIndex -= 1
+           console.log("New index", recipeIndex)
+           console.log("New index", ingrediantIndex)
+           console.log("New ing", ingredient)
+           console.log("even tar", e.target)
+           console.log("compo", this)
+
+           this.$emit("ingrediantReplaced", {
+               "actioner": e.target,
+               "component": this,
+               "recipeIndex": recipeIndex,
+               "ingrediantIndex": ingrediantIndex,
+               "ingredient": ingredient
+           })
        }
-   }
+   },
 }
 </script>
 
@@ -131,5 +168,58 @@ ul.ingredients {
 .replacementtext a {
      cursor: pointer;
 }
+
+<style>
+
+.bg-t6-guuut {
+    background-color: #417505;
+}
+
+.bg-t6-guut {
+    background-color: #7ED321;
+}
+
+.bg-t6-meedium {
+    background-color: #F8E71C;
+}
+
+.bg-t6-medium {
+    background-color: #F5A623;
+}
+
+.bg-t6-bad {
+    background-color: #D0021B;
+}
+
+.border-t6-guuut {
+    border-color: #417505;
+}
+
+.border-t6-guut {
+    border-color: #7ED321;
+}
+
+.border-t6-meedium {
+    border-color: #F8E71C;
+}
+
+.border-t6-medium {
+    border-color: #F5A623;
+}
+
+.border-t6-bad {
+    border-color: #D0021B;
+}
+
+
+
+li.text-t6-bad::before {
+    content: "• ";
+  color: red; /* or whatever color you prefer */
+}
+
+
+</style>
+
 </style>
 
