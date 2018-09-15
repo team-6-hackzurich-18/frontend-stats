@@ -56,7 +56,7 @@
                                     <b-badge class=" float-right" variant="danger">{{ calcPointsOnReplacement(recipes[i-1].userRecipeCost, 0) }}</b-badge>
                                 </div>
                         </b-col>
-                        <b-col lg="5" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;">
+                        <b-col lg="5" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;display: flex;align-items: center;justify-content: center;">
                             <img style="width: 100%; border-radius: 0px 5px 5px 0px;" :src="recipes[i-1].picture_url">
                         </b-col>
                     </b-row>
@@ -82,7 +82,6 @@ export default {
     }
   },
   created(){
-      console.log("leng", (this.recipes.length))
   },
    computed: {
        createCalendarIcon(){
@@ -90,9 +89,9 @@ export default {
        },
        colorOfStatsOfWeek(){
            let color = 'danger'
-           if(this.stats.totalMenuScore < 1){
+           if(this.stats.averageCost < 1){
                color = 'success'
-           } else if (this.stats.totalMenuScore == 1){
+           } else if (this.stats.averageCost == 1){
                color = 'warning'
            }
 
@@ -107,7 +106,6 @@ export default {
        },
        calcPointsOnReplacement(itemCO2, replacementCO2){
             let plusScore = Math.floor(itemCO2 - replacementCO2)
-            console.log("Plusscore", plusScore )
             if (plusScore <= 0){
                 plusScore = 1;
             }

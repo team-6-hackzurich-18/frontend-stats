@@ -6,27 +6,20 @@
     <b-container>
         <b-row class="r mt-3">
             <b-col sm="12" lg="4">
-                    <b-card border-variant="success" header-text-variant="white" header-bg-variant="success" class="text-center">
+                    <b-card  :border-variant="scoreWorldConsumedColor" header-text-variant="white" :header-bg-variant="scoreWorldConsumedColor" class="text-center">
                         <template slot="header">
                             <h4><img height="30px;" :src="scoreIcon"> Your score <img height="30px;" :src="scoreIcon"></h4>
                         </template>
-                       <div class="text-center">
-                           <h1>{{ score }}</h1>  
-                       </div>
+                       
+                       <div style="margin: 0 auto;" id="earth_container" :style="earthContainerImage">
+                        </div>
+                        <h3 class="mt-2">{{ scoreWorldConsumed }}x</h3>
+
                        <br>
                         <blockquote class="blockquote">
                             <p class="mb-0"> You are a really conscience person.</p>
-                            <footer class="blockquote-footer">probabbly <cite title="Source Title">Konfuzius</cite></footer>
+                            <footer class="blockquote-footer">probably <cite title="Source Title">Konfuzius</cite></footer>
                         </blockquote>
-                    </b-card>
-
-                    <b-card class="mt-3 text-center" >
-                        <template slot="header">
-                            <b>How many planets do you need?</b>
-                        </template>
-                        <div style="margin: 0 auto;" id="earth_container" :style="earthContainerImage">
-                        </div>
-                        <h3 class="mt-2">{{ scoreWorldConsumed }}x</h3>
                     </b-card>
 
                     <b-card class="mt-3 text-center" header="" >
@@ -35,10 +28,10 @@
                         </template>
                         <trend
                             id="charttrend"
-                            :data="history"
+                            :data="[0.4, 0.9, 0.3, 0.2, 0.4, 0.6, 0.2, 0.7, 0.7, 0.3, 0.1, 0.4, 0.2, 0.9, 0.2]"
                             :gradient="['#33cc33', '#ff9933', '#ff5050']"
                             auto-draw
-                            style="stroke-width:3px;"
+                            style="stroke-width:4px;"
                             smooth>
                         </trend>
                     </b-card>
@@ -86,7 +79,20 @@ export default {
   computed: {
        scoreIcon(){
            //https://en.wikipedia.org/wiki/Emoji
-           let iconName = (this.score < 0.5) ? '1f389' : '1f614';
+           let iconName = '1f614'
+
+            if (this.scoreWorldConsumed < 0.75) {
+                iconName = '1f389'
+            } else if (this.scoreWorldConsumed < 1) {
+                iconName = '1f60a'
+            } else if (this.scoreWorldConsumed < 1.25) {
+                iconName = '1f610'
+            } else if (this.scoreWorldConsumed < 1.5) {
+                iconName = '1f611'
+            } else {
+                iconName = '1f614'
+            }
+
            return require("./assets/" + iconName + ".png");
        },
        scoreWorldConsumed(){
@@ -98,7 +104,30 @@ export default {
        earthContainerImage(){
            let width = (this.scoreWorldConsumedImage * 100) + 'px';
            console.log("width", width)
-           return 'background-image: url(\'' + require("./assets/earth.jpg") + '\');background-size: contain;width:' + width + ';height:100px; background-repeat: repeat-x;'
+           return 'background-image: url(\'' + require("./assets/earth.jpg") + '\');background-size: contain;max-width: 100%;width:' + width + ';height:100px; background-repeat: repeat-x;'
+       },
+       scoreWorldConsumedColor(){
+           var color = 'bad'
+            // 0.75 sehr grün
+            // 1 grün
+            // 1.25 gelb
+            // 1.5 rot
+            // > sehr rot
+
+
+            if (this.scoreWorldConsumed < 0.75) {
+                color = 't6-guut'
+            } else if (this.scoreWorldConsumed < 1) {
+                color = 't6-guut'
+            } else if (this.scoreWorldConsumed < 1.25) {
+                color = 't6-meedium'
+            } else if (this.scoreWorldConsumed < 1.5) {
+                color = 't6-medium'
+            } else {
+                color = 't6-bad'
+            }
+
+            return color
        }
   },
   methods: {
@@ -107,7 +136,7 @@ export default {
                 console.log(response.data)
 
                 this.recipes = response.data.allRecipes
-                this.stats = response.data.stats
+                this.stats = newStats
 
                 /*
                 this.recipes = [
@@ -175,6 +204,47 @@ export default {
 </script>
 
 <style>
+
+.bg-t6-guuut {
+    background-color: #417505;
+}
+
+.bg-t6-guut {
+    background-color: #7ED321;
+}
+
+.bg-t6-meedium {
+    background-color: #F8E71C;
+}
+
+.bg-t6-medium {
+    background-color: #F5A623;
+}
+
+.bg-t6-bad {
+    background-color: #D0021B;
+}
+
+.border-t6-guuut {
+    border-color: #417505;
+}
+
+.border-t6-guut {
+    border-color: #7ED321;
+}
+
+.border-t6-meedium {
+    border-color: #F8E71C;
+}
+
+.border-t6-medium {
+    border-color: #F5A623;
+}
+
+.border-t6-bad {
+    border-color: #D0021B;
+}
+
 
 
 </style>
