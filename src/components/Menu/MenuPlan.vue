@@ -25,14 +25,17 @@
                     
                 </b-card>
         </b-card-group>
-        <b-card-group deck class="mt-3">
-            <b-card  :header=" createCalendarIcon + ' <b>Monday</b>'" >
+
+        
+
+        <b-card-group deck class="mt-3" v-for="i in (recipes.length)" :key="i">
+            <b-card :header=" createCalendarIcon + ' <b>' + days[(i-1)%7] + '</b>'" >
                 <b-card>
                     <b-row>
                         <b-col lg="7" class="d-flex flex-column" >
-                            <h3>{{ recipes[0].Name }}</h3>
+                            <h3>{{ recipes[i-1].Name }}</h3>
                                 <ul class="">
-                                    <li v-for="(ingredient, index) in recipes[0].ingredients"
+                                    <li v-for="(ingredient, index) in recipes[i-1].ingredients"
                                         :key="index"
                                         data-toggle="tooltip"
                                         data-placement="top"
@@ -49,89 +52,19 @@
                                         </li>
                                 </ul>
                                 <div class="mt-auto">
-                                    <b-link :href="recipes[0].recipe_url" target="_blank" class="card-link">Open recipe</b-link>
-                                    <b-badge class=" float-right" variant="danger">{{ calcPointsOnReplacement(recipes[0].userRecipeCost, 0) }}</b-badge>
+                                    <b-link :href="recipes[i-1].recipe_url" target="_blank" class="card-link">Open recipe</b-link>
+                                    <b-badge class=" float-right" variant="danger">{{ calcPointsOnReplacement(recipes[i-1].userRecipeCost, 0) }}</b-badge>
                                 </div>
                         </b-col>
                         <b-col lg="5" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;">
-                            <img style="width: 100%; border-radius: 0px 5px 5px 0px;" :src="recipes[0].picture_url">
+                            <img style="width: 100%; border-radius: 0px 5px 5px 0px;" :src="recipes[i-1].picture_url">
                         </b-col>
                     </b-row>
                 </b-card>
             </b-card>
         </b-card-group>
-        <b-card-group deck class="mt-3">
-            <b-card  :header=" createCalendarIcon + ' <b>Tuesday</b>'" >
-                <b-card>
-                    <b-row>
-                        <b-col lg="7" class="d-flex flex-column" >
-                            <h3>{{ recipes[1].Name }}</h3>
-                                <ul class="">
-                                    <li v-for="(ingredient, index) in recipes[1].ingredients"
-                                        :key="index"
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        :title="'CO2: ' + ingredient.CO2"
-                                        :class="getColor(ingredient.CO2)"
-                                        >
-                                        {{ ingredient.kg + ' kg ' + ingredient.Product  }}
-                                        <ul v-if="ingredient.hasOwnProperty('replacement')">
-                                            <li class="text-primary replacementtext">
-                                                <a>&#8614; Replace with {{ ingredient.replacement.Product }} 
-                                                    <span class="badge badge-success">+ {{ calcPointsOnReplacement(ingredient.CO2, ingredient.replacement.CO2) }}</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        </li>
-                                </ul>
-                                <div class="mt-auto">
-                                    <b-link :href="recipes[0].link" target="_blank" class="card-link">Open recipe</b-link>
-                                    <b-badge class=" float-right" variant="danger">{{ calcPointsOnReplacement(recipes[1].userRecipeCost, 0) }}</b-badge>
-                                </div>
-                        </b-col>
-                        <b-col lg="5" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;">
-                            <img style="width: 100%; border-radius: 0px 5px 5px 0px;" :src="recipes[1].thumbnailLink">
-                        </b-col>
-                    </b-row>
-                </b-card>
-            </b-card>
-        </b-card-group>
-        <b-card-group deck class="mt-3">
-            <b-card  :header=" createCalendarIcon + ' <b>Wednesday</b>'" >
-                <b-card>
-                    <b-row>
-                        <b-col lg="7" class="d-flex flex-column" >
-                            <h3>{{ recipes[2].Name }}</h3>
-                                <ul class="">
-                                    <li v-for="(ingredient, index) in recipes[2].ingredients"
-                                        :key="index"
-                                        data-toggle="tooltip"
-                                        data-placement="top"
-                                        :title="'CO2: ' + ingredient.CO2"
-                                        :class="getColor(ingredient.CO2)"
-                                        >
-                                        {{ ingredient.kg + ' kg ' + ingredient.Product  }}
-                                        <ul v-if="ingredient.hasOwnProperty('replacement')">
-                                            <li class="text-primary replacementtext">
-                                                <a>&#8614; Replace with {{ ingredient.replacement.Product }} 
-                                                    <span class="badge badge-success">+ {{ calcPointsOnReplacement(ingredient.CO2, ingredient.replacement.CO2) }}</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        </li>
-                                </ul>
-                                <div class="mt-auto">
-                                    <b-link :href="recipes[0].link" target="_blank" class="card-link">Open recipe</b-link>
-                                    <b-badge class=" float-right" variant="danger">{{ calcPointsOnReplacement(recipes[2].userRecipeCost, 0) }}</b-badge>
-                                </div>
-                        </b-col>
-                        <b-col lg="5" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;">
-                            <img style="width: 100%; border-radius: 0px 5px 5px 0px;" :src="recipes[2].thumbnailLink">
-                        </b-col>
-                    </b-row>
-                </b-card>
-            </b-card>
-        </b-card-group>
+
+      
         
     </div>
 </template>
@@ -143,9 +76,13 @@ export default {
   ],
   data () {
     return {
+        days: [
+            'Monday', 'Tuesday', 'Thursday', 'Wednesday', 'Friday','Saturday', 'Sunday'
+        ]
     }
   },
   created(){
+      console.log("leng", (this.recipes.length))
   },
    computed: {
        createCalendarIcon(){
