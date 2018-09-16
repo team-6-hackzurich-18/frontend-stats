@@ -36,6 +36,12 @@
                         </trend>
                     </b-card>
 
+                    <b-card class="mt-3">
+                        <template slot="header" class="text-center">
+                            <p class="mb-0 text-center"><b>Current ranking</b></p>
+                        </template>
+                         <b-table striped hover :items="rankings" small="true"></b-table>
+                    </b-card>
             </b-col>
             <b-col sm="12" lg="8" class="">
 
@@ -70,11 +76,13 @@ export default {
             averageColor: 0
         },
        recipes: [],
-       history: [0]
+       history: [0],
+       rankings: [],
     }
   },
   created(){
       this.getRecipes()
+      this.getRankings()
   },
   computed: {
        scoreIcon(){
@@ -181,6 +189,26 @@ export default {
                 */
 
             })
+      },
+      getRankings(){
+          Vue.axios.get("https://hackzurich-node-red.scapp.io/rankings", {headers: {'Access-Control-Allow-Origin': '*'}}).then((response) => {
+                console.log(response.data)
+
+            this.rankings = []
+            let ranks = response.data["ranking"]
+            let userIDs = response.data["usersID_sorted"]
+            let scores = response.data["scores_sorted"]
+            for (let rank of ranks) {
+                let info = {
+                    rank: rank,
+                    userID: userIDs[rank-1],
+                    score: scores[rank-1]
+                }
+                this.rankings.push(info)
+            }
+
+            console.log(this.rankings)
+        })
       },
       getHistory(){
           Vue.axios.get("https://hackzurich-node-red.scapp.io/recipes", {headers: {'Access-Control-Allow-Origin': '*'}}).then((response) => {
