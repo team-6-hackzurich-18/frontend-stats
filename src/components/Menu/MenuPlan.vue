@@ -121,7 +121,8 @@ export default {
            return 'text-' + color
        },
        calcPointsOnReplacement(itemCO2, replacementCO2){
-            let plusScore = Math.floor(itemCO2 - replacementCO2)
+           let diff = itemCO2 - replacementCO2
+           let plusScore =  Number(Math.round(diff+'e2')+'e-2')
             if (plusScore <= 0){
                 plusScore = 1;
             }
