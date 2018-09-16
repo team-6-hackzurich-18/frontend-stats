@@ -31,9 +31,9 @@
                     <b-row>
                         <b-col lg="7" class="d-flex flex-column" >
                             <h3>{{ recipes[i-1].Name }}</h3>
-                                <ul class="">
+                                <ul>
                                     <li v-for="(ingredient, index) in recipes[i-1].ingredients"
-                                        :key="index"
+                                        :key="'ingred-' + index"
                                         data-toggle="tooltip"
                                         data-placement="top"
                                         :title="'CO2: ' + ingredient.CO2"
@@ -46,7 +46,7 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                        </li>
+                                    </li>
                                 </ul>
                                 <div class="mt-auto">
                                     <b-link :href="recipes[i-1].recipe_url" target="_blank" class="card-link">Open recipe</b-link>
@@ -129,9 +129,8 @@ export default {
        },
        replaceIngredient(e, recipeIndex, ingrediantIndex, ingredient){
            recipeIndex -= 1
-           ingrediantIndex -= 1
-           console.log("New index", recipeIndex)
-           console.log("New index", ingrediantIndex)
+           console.log("New recipeIndex", recipeIndex)
+           console.log("New ingrediantIndex", ingrediantIndex)
            console.log("New ing", ingredient)
            console.log("even tar", e.target)
            console.log("compo", this)
