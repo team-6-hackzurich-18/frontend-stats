@@ -6,18 +6,18 @@
                 <b-card class="card" :class="['text-' + colorOfStatsOfWeek, 'border-' + colorOfStatsOfWeek]" title="Stats for this week" >
                     <b-row class="text-dark">
                         <b-col>
-                            <span style="font-szie:100%;width:100%;" class="badge border border-secondary">
-                                Total recipes <span class="badge badge-light">{{ stats.totalRecipes }}</span>
+                            <span style="font-szie:100%;width:100%;font-size:15px;" class="badge border border-secondary">
+                                Total recipes <span style="font-size:15px;" class="badge badge-light">{{ stats.totalRecipes }}</span>
                             </span>
                         </b-col>
                         <b-col>
-                           <span style="font-szie:100%;width:100%;" class="badge border border-secondary">
-                                Total score <span class="badge badge-light">{{ calcPointsOnReplacement(stats.costHistTotal,0) }}</span>
+                           <span style="font-szie:100%;width:100%;font-size:15px;" class="badge border border-secondary">
+                               Total CO2 eq <span style="font-size:15px;" class="badge badge-light">{{ calcPointsOnReplacement(stats.costHistTotal,0) }}</span>
                             </span>
                         </b-col>
                         <b-col>
-                            <span style="font-szie:100%;width:100%;" class="badge border border-secondary">
-                                Avarage score <span class="badge badge-light">{{ calcPointsOnReplacement(stats.averageCost, 0) }}</span>
+                            <span style="font-szie:100%;width:100%;font-size:15px;" class="badge border border-secondary">
+                                Avarage CO2 eq <span style="font-size:15px;" class="badge badge-light">{{ calcPointsOnReplacement(stats.averageCost, 0) }}</span>
                             </span>
                         </b-col>
                     </b-row>
@@ -50,7 +50,7 @@
                                 </ul>
                                 <div class="mt-auto">
                                     <b-link :href="recipes[i-1].recipe_url" target="_blank" class="card-link">Open recipe</b-link>
-                                    <b-badge class=" float-right" variant="danger">{{ calcPointsOnReplacement(recipes[i-1].userRecipeCost, 0) }}</b-badge>
+                                    <b-badge class=" float-right" variant="danger">Recipe CO2 eq: {{ calcPointsOnReplacement(recipes[i-1].userRecipeCost, 0) }}</b-badge>
                                 </div>
                         </b-col>
                         <b-col lg="5" style="margin-top:-20px;margin-bottom:-20px;padding-right: 0px;display: flex;align-items: center;justify-content: center;">
@@ -208,12 +208,6 @@ ul.ingredients {
     border-color: #D0021B;
 }
 
-
-
-li.text-t6-bad::before {
-    content: "• ";
-  color: red; /* or whatever color you prefer */
-}
 
 </style>
 
