@@ -42,7 +42,7 @@
                                         <ul v-if="ingredient.hasOwnProperty('Replacement')">
                                             <li class="text-primary replacementtext">
                                                 <a @click="replaceIngredient($event, i, index,  ingredient.Replacement)">&#8614; Replace with {{ ingredient.Replacement.Product }} 
-                                                    <span class="badge badge-success">+ {{ calcPointsOnReplacement(ingredient.CO2, ingredient.Replacement.CO2) }}</span>
+                                                    <span class="badge badge-success">- {{ calcPointsOnReplacement(ingredient.CO2, ingredient.Replacement.CO2) }}</span>
                                                 </a>
                                             </li>
                                         </ul>

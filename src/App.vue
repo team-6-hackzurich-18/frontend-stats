@@ -191,10 +191,24 @@ export default {
           })
       },
       replaceIngrediant(infos){
+            console.log("infos", infos)
 
             infos.ingredient.kg = this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex].kg
-
             this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex] = infos.ingredient
+
+            //this.calcStats( this.recipes[infos.recipeIndex].ingredients)
+
+
+            Vue.axios.post("https://hackzurich-node-red.scapp.io/stats/ingredients", {
+                ingredients: this.recipes[infos.recipeIndex].ingredients
+            }).then(response => {
+                console.log("pop", response.data)
+
+                 this.recipes[infos.recipeIndex].userRecipeCost = response.data.cost_recipe
+
+            })
+
+
             infos.component.$forceUpdate()
       }
   },
