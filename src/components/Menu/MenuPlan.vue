@@ -21,8 +21,6 @@
                             </span>
                         </b-col>
                     </b-row>
-                    
-                    
                 </b-card>
         </b-card-group>
 
@@ -30,7 +28,6 @@
 
         <b-card-group deck class="mt-3" v-for="i in (recipes.length)" :key="i">
             <b-card :header=" createCalendarIcon + ' <b>' + days[(i-1)%7] + '</b>'" >
-                <b-card>
                     <b-row>
                         <b-col lg="7" class="d-flex flex-column" >
                             <h3>{{ recipes[i-1].Name }}</h3>
@@ -60,7 +57,6 @@
                             <img style="width: 100%; border-radius: 0px 5px 5px 0px;" :src="recipes[i-1].picture_url">
                         </b-col>
                     </b-row>
-                </b-card>
             </b-card>
         </b-card-group>
 
@@ -168,6 +164,7 @@ ul.ingredients {
 .replacementtext a {
      cursor: pointer;
 }
+</style>
 
 <style>
 
@@ -217,9 +214,6 @@ li.text-t6-bad::before {
     content: "• ";
   color: red; /* or whatever color you prefer */
 }
-
-
-</style>
 
 </style>
 
