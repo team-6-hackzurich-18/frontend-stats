@@ -37,7 +37,7 @@
                     </b-card>
 
             </b-col>
-            <b-col sm="12" lg="8" class="mt-3">
+            <b-col sm="12" lg="8" class="">
 
                 <menu-plan :stats="stats" :recipes="recipes" @ingrediantReplaced="replaceIngrediant"></menu-plan>
 
@@ -191,14 +191,11 @@ export default {
           })
       },
       replaceIngrediant(infos){
-          console.log("comp2",  infos)
 
-          infos.ingredient.kg = this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex].kg
+            infos.ingredient.kg = this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex].kg
 
-            console.log("bef", this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex])
             this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex] = infos.ingredient
             infos.component.$forceUpdate()
-            console.log("aft", this.recipes[infos.recipeIndex].ingredients[infos.ingrediantIndex])
       }
   },
   watch: {
