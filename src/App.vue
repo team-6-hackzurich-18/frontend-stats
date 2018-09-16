@@ -40,7 +40,7 @@
                         <template slot="header" class="text-center">
                             <p class="mb-0 text-center"><b>Current ranking</b></p>
                         </template>
-                         <b-table striped hover :items="rankings" small="true"></b-table>
+                         <b-table striped hover :items="rankings" small></b-table>
                     </b-card>
             </b-col>
             <b-col sm="12" lg="8" class="">
