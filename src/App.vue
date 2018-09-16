@@ -14,12 +14,6 @@
                        <div style="margin: 0 auto;" id="earth_container" :style="earthContainerImage">
                         </div>
                         <h3 class="mt-2">{{ scoreWorldConsumed }}x</h3>
-
-                       <br>
-                        <blockquote class="blockquote">
-                            <p class="mb-0"> You are a really conscience person.</p>
-                            <footer class="blockquote-footer">probably <cite title="Source Title">Konfuzius</cite></footer>
-                        </blockquote>
                     </b-card>
 
                     <b-card class="mt-3 text-center" header="" >
